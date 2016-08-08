@@ -1,12 +1,10 @@
 function Slider(opts) {
     this.wrap = opts.dom;
     this.list = opts.list;
-
     this.init();
     this.renderDOM();
     this.bindDOM();
 }
-
 Slider.prototype = {
     init: function () {
         /* 窗口宽度*/
@@ -18,9 +16,7 @@ Slider.prototype = {
         var wrap = this.wrap,
             data = this.list,
             len = data.length, i;
-
         this.outer = document.createElement('ul');
-
         for (i = 0; i < len; i++) {
             var li = document.createElement('li'),
                 item = data[i];
@@ -37,29 +33,36 @@ Slider.prototype = {
     },
     goIndex: function (n) {
         var idx = this.idx,
-            len = this.lis.length,
-            cidx;
-        if (typeof n === 'number') {
+            cidx,
+            len = this.lis.length;
+
+        if (typeof  n == 'number') {
             cidx = idx;
         } else if (typeof n == 'string') {
             cidx = idx + n * 1;
         }
+        /*如果索引值超出范围*/
         if (cidx > len - 1) {
             cidx = len - 1;
         } else if (cidx < 0) {
             cidx = 0;
         }
         this.idx = cidx;
+        var min = cidx - 1,
+            max = cidx + 1,
+            now = this.lis[cidx],
+            before = this.lis[min],
+            next = this.lis[max];
 
         //改变过渡的方式，从无动画变为有动画
-        this.lis[cidx].style.webkitTransition = '-webkit-transform .2s ease-out';
-        this.lis[cidx - 1] && (this.lis[cidx - 1].style.webkitTransition = '-webkit-transform 0.2s ease-out');
-        this.lis[cidx + 1] && (this.lis[cidx + 1].style.webkitTransition = '-webkit-transform 0.2s ease-out');
-
+        for (min; min < max; min++) {
+            this.lis[min] &&
+            (this.lis[min].style.webkitTransition = '-webkit-transform .2s ease-out');
+        }
         //改变动画后所应该的位移值
-        this.lis[cidx].style.webkitTransform = 'translate3d(0, 0, 0)';
-        this.lis[cidx - 1] && (this.lis[cidx - 1].style.webkitTransform = 'translate3d(-' + this.scaleW + 'px, 0, 0)');
-        this.lis[cidx + 1] && (this.lis[cidx + 1].style.webkitTransform = 'translate3d(' + this.scaleW + 'px, 0, 0)');
+        now.style.webkitTransform = 'translate3d(0, 0, 0)';
+        before && (before.style.webkitTransform = 'translate3d(-' + this.scaleW + 'px, 0, 0)');
+        next && (next.style.webkitTransform = 'translate3d(' + this.scaleW + 'px, 0, 0)');
     },
     bindDOM: function () {
         /*先缓存this*/
@@ -90,13 +93,19 @@ Slider.prototype = {
             /*手指移动位移*/
             self.offsetX = evt.targetTouches[0].pageX - self.startX;
 
-            var i = self.idx - 1,
-                m = i + 3;
-
+            /*每次改变  只需要改变 当前图片,前一张图片,后一张图片*/
+            var before = self.idx - 1,
+                nex = before + 3;
             //最小化改变DOM属性
-            for (i; i < m; i++) {
-                self.lis[i] && (self.lis[i].style.webkitTransition = '-webkit-transform 0s ease-out');
-                self.lis[i] && (self.lis[i].style.webkitTransform = 'translate3d(' + ((i - self.idx) * self.scaleW + self.offsetX) + 'px, 0, 0)');
+            /*下面为简写
+             * if(self.lis[before]){
+             *       …………
+             * }
+             * */
+            for (before; before < nex; before++) {
+                /*去除移动时 有延迟*/
+                self.lis[before] && (self.lis[before].style.webkitTransition = '-webkit-transform 0s ease-out');
+                self.lis[before] && (self.lis[before].style.webkitTransform = 'translate3d(' + ((before - self.idx) * self.scaleW + self.offsetX) + 'px, 0, 0)');
             }
         }
         /*手指抬起的事件*/
@@ -109,14 +118,15 @@ Slider.prototype = {
              * 当手指移动时间超过300ms的时候,按位移算
              * */
             if (endTime - self.startTime > 300) {
-                if (self.offsetX >= boundary) {
+                if (self.offsetX >= boundary) {/*进入上一页*/
                     self.goIndex('-1');
-                } else if (self.offsetX < 0 && self.offsetX < -boundary) {
+                } else if (self.offsetX < 0 && self.offsetX < -boundary) {/*进入下一页*/
                     self.goIndex('+1');
-                } else {
+                } else {/*留在本页*/
                     self.goIndex('0');
                 }
             } else {
+                /*快速滑动的时候,较少滑动的间隔,即可滑动*/
                 if (self.offsetX > 50) {
                     self.goIndex('-1');
                 } else if (self.offsetX < -50) {
