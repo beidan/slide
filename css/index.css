@@ -1,0 +1,32 @@
+body, li, ul {
+    margin: 0;
+    padding: 0;
+    background: #333;
+    overflow: hidden;
+}
+
+li, ul {
+    list-style: none;
+}
+
+/* 隐藏画布外的内容 */
+#canvas {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#canvas ul {
+    height: 100%;
+}
+
+#canvas li {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#canvas li img {
+    max-width: 100%;
+    max-height: 100%;
+}

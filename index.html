@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
+    <meta name='apple-touch-fullscreen' content='yes'>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index.css"/>
+
+</head>
+<body>
+<div id="canvas"></div>
+
+<script src="css/index.js"></script>
+<script>
+    var list = [{
+        height: 950,
+        width: 800,
+        img: "imgs/1.jpg"
+    }, {
+        height: 1187,
+        width: 900,
+        img: "imgs/2.jpg"
+    }, {
+        height: 766,
+        width: 980,
+        img: "imgs/3.jpg"
+    }, {
+        height: 754,
+        width: 980,
+        img: "imgs/4.jpg"
+    }, {
+        height: 493,
+        img: "imgs/5.jpg",
+        width: 750
+    }, {
+        height: 500,
+        img: "imgs/6.jpg",
+        width: 750
+    }, {
+        height: 600,
+        img: "imgs/7.jpg",
+        width: 400
+    }];
+
+    new Slider({
+        'dom': document.getElementById('canvas'),
+        'list': list
+    });
+</script>
+
+
+</body>
+</html>
