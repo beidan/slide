@@ -207,3 +207,35 @@ var Slider = function () {
 
     return Slider;
 }();
+
+var Animal = function () {
+    //构造方法
+    function Animal(name) {
+        _classCallCheck(this, Animal);
+
+        this.name = name;
+    }
+    //自定义一个静态方法
+
+
+    _createClass(Animal, [{
+        key: 'sayHello',
+        value: function sayHello() {
+            console.log('hello');
+        }
+    }], [{
+        key: 'friends',
+        value: function friends(a1, a2) {
+            console.log(a1 + ' and ' + a2 + ' are friends');
+        }
+    }]);
+
+    return Animal;
+}();
+//调用静态方法
+
+
+Animal.friends('dog', 'cat'); //dog and cat are friends
+Animal.sayHello(); //出错
+var animal = new Animal('dog');
+animal.sayHello(); //hello

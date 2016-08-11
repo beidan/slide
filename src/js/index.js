@@ -150,3 +150,26 @@ class Slider {
         outer.addEventListener('touchend', endHandler);
     }
 }
+
+class Animal {
+    //构造方法
+    constructor(name){
+        this.name = name;
+    }
+    //自定义一个静态方法
+    static friends(a1,a2){
+        console.log(`${a1} and ${a2} are friends`);
+    }
+    sayHello(){
+        console.log('hello');
+    }
+}
+//调用静态方法
+Animal.friends('dog','cat');//dog and cat are friends
+Animal.sayHello();  //出错
+var animal = new Animal('dog');
+animal.sayHello();  //hello
+
+
+
+
