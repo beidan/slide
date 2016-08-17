@@ -27,8 +27,6 @@ var Slider = function () {
             /*当前图片的索引*/
             this.idx = 0;
             this.renderDOM();
-
-            this.lis = this.outer.getElementsByTagName('li');
             this.bindDOM();
         }
 
@@ -37,42 +35,22 @@ var Slider = function () {
     }, {
         key: 'renderDOM',
         value: function renderDOM() {
-            var wrap = this.wrap,
-                data = this.list,
-                i = 0,
-                html = [];
-            this.outer = document.createElement('ul');
+            var data = this.list,
+                i = void 0,
+                len = data.length;
 
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
+            this.outer = this.wrap.getElementsByTagName('ul');
 
-            try {
-                for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var val = _step.value;
+            this.lis = this.outer[0].querySelectorAll('li');
 
-                    if (val) {
-                        html.push('<li style="transform: translate3d(' + i * this.scaleW + 'px ,0,0)">\n                    <img src="' + val['img'] + '" alt="img" width="' + window.innerWidth + 'px" height="180px" />\n                  </li>');
-                    }
-                    i++;
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
+            for (i = 0; i < len; i++) {
+
+                if (this.lis[i]) {
+                    this.lis[i].style.webkitTransform = 'translate3d(' + i * this.scaleW + 'px ,0,0)';
+                    var image = this.lis[i].querySelector('img');
+                    image.src = '' + data[i]['imageUrl'];
                 }
             }
-
-            this.outer.innerHTML = html.join('');
-            wrap.appendChild(this.outer);
         }
     }, {
         key: 'goIndex',
@@ -113,7 +91,6 @@ var Slider = function () {
             for (var _i = 0; _i < _arr.length; _i++) {
                 var val = _arr[_i];
                 if (val) {
-                    console.log(val);
                     val.style.webkitTransition = '-webkit-transform .2s ease-out';
                     val.style.webkitTransform = 'translate3d(' + move[i] + 'px,0,0)';
                 }
@@ -126,7 +103,7 @@ var Slider = function () {
             var _this = this;
 
             var scaleW = this.scaleW,
-                outer = this.outer;
+                outer = this.outer[0];
 
             var startHandle = function startHandle(evt) {
                 /*记录刚开始按下的时间*/
@@ -207,35 +184,3 @@ var Slider = function () {
 
     return Slider;
 }();
-
-var Animal = function () {
-    //构造方法
-    function Animal(name) {
-        _classCallCheck(this, Animal);
-
-        this.name = name;
-    }
-    //自定义一个静态方法
-
-
-    _createClass(Animal, [{
-        key: 'sayHello',
-        value: function sayHello() {
-            console.log('hello');
-        }
-    }], [{
-        key: 'friends',
-        value: function friends(a1, a2) {
-            console.log(a1 + ' and ' + a2 + ' are friends');
-        }
-    }]);
-
-    return Animal;
-}();
-//调用静态方法
-
-
-Animal.friends('dog', 'cat'); //dog and cat are friends
-Animal.sayHello(); //出错
-var animal = new Animal('dog');
-animal.sayHello(); //hello

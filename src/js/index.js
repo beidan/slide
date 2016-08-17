@@ -14,29 +14,26 @@ class Slider {
         /*当前图片的索引*/
         this.idx = 0;
         this.renderDOM();
-
-        this.lis = this.outer.getElementsByTagName('li');
         this.bindDOM();
     }
 
     /*绘制dom*/
     renderDOM() {
-        let wrap = this.wrap,
-            data = this.list,
-            i = 0,
-            html = [];
-        this.outer = document.createElement('ul');
+        let data = this.list,
+            i, len = data.length;
 
-        for (let val of data) {
-            if (val) {
-                html.push(`<li style="transform: translate3d(${i * this.scaleW}px ,0,0)">
-                    <img src="${val['img']}" alt="img" width="${window.innerWidth}px" height="180px" />
-                  </li>`);
+        this.outer = this.wrap.getElementsByTagName('ul');
+
+        this.lis = this.outer[0].querySelectorAll('li');
+
+        for (i = 0; i < len; i++) {
+
+            if (this.lis[i]) {
+                this.lis[i].style.webkitTransform = `translate3d(${i * this.scaleW}px ,0,0)`;
+                let image = this.lis[i].querySelector('img');
+                image.src = `${data[i]['imageUrl']}`;
             }
-            i++;
         }
-        this.outer.innerHTML = html.join('');
-        wrap.appendChild(this.outer);
     }
 
     goIndex(n) {
@@ -69,7 +66,6 @@ class Slider {
 
         for (let val of [min, now, max]) {
             if (val) {
-                console.log(val);
                 val.style.webkitTransition = '-webkit-transform .2s ease-out';
                 val.style.webkitTransform = `translate3d(${move[i]}px,0,0)`;
             }
@@ -79,7 +75,7 @@ class Slider {
 
     bindDOM() {
         let scaleW = this.scaleW,
-            outer = this.outer;
+            outer = this.outer[0];
 
         let startHandle = (evt)=> {
             /*记录刚开始按下的时间*/
@@ -151,24 +147,6 @@ class Slider {
     }
 }
 
-class Animal {
-    //构造方法
-    constructor(name){
-        this.name = name;
-    }
-    //自定义一个静态方法
-    static friends(a1,a2){
-        console.log(`${a1} and ${a2} are friends`);
-    }
-    sayHello(){
-        console.log('hello');
-    }
-}
-//调用静态方法
-Animal.friends('dog','cat');//dog and cat are friends
-Animal.sayHello();  //出错
-var animal = new Animal('dog');
-animal.sayHello();  //hello
 
 
 
